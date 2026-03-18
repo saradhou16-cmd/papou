@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un défi pour l'Ingénieur</title>
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --tech-blue: #2c3e50;
+            --accent-orange: #f39c12;
+            --chalk-white: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+            /* Arrière-plan subtil style schéma technique */
+            background-image: 
+                linear-gradient(rgba(44, 62, 80, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(44, 62, 80, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            overflow: hidden;
+        }
+
+        /* --- Zone 1 : Le Calcul (Tableau Noir) --- */
+        #calculation-zone {
+            text-align: center;
+            background: #222; /* Couleur tableau noir */
+            padding: 40px;
+            border-radius: 15px;
+            border: 10px solid #8e44ad; /* Cadre violet pour le fun */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+        }
+
+        #calculation-zone h2 {
+            color: var(--accent-orange);
+            font-size: 1.5rem;
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #equation {
+            font-family: 'Courier New', Courier, monospace; /* Style craie */
+            font-size: 3.5rem;
+            color: var(--chalk-white);
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        #answer-input {
+            font-size: 2rem;
+            padding: 10px;
+            width: 100px;
+            text-align: center;
+            border: 3px solid var(--tech-blue);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--tech-blue);
+        }
+
+        /* Supprime les flèches sur les inputs number */
+        #answer-input::-webkit-inner-spin-button, 
+        #answer-input::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        #submit-btn {
+            font-size: 1.2rem;
+            padding: 12px 24px;
+            margin-left: 15px;
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            vertical-align: top;
+        }
+
+        #submit-btn:hover {
+            background-color: #e67e22;
+        }
+
+        #error-msg {
+            color: #e74c3c;
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 1.2rem;
+        }
+
+        /* --- Zone 2 : Le Cadeau Animé --- */
+        #gift-zone {
+            display: none; /* Caché au début */
+            position: absolute;
+            text-align: center;
+        }
+
+        #gift-box {
+            font-size: 10rem;
+            cursor: pointer;
+            animation: bounce 1s infinite alternate;
+            transition: transform 0.5s;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0) scale(1); }
+            to { transform: translateY(-20px) scale(1.05); }
+        }
+
+        /* --- Zone 3 : La Lettre (Cachée dans le cadeau) --- */
+        #letter {
+            display: none;
+            background: white;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            width: 350px;
+            position: relative;
+            transform: scale(0);
+            transition: transform 1s ease-out;
+            border: 2px solid #ddd;
+        }
+
+        #letter-text {
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive; /* Style très enfantin */
+            font-size: 2.5rem;
+            color: #2980b9; /* Bleu doux */
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Le dessin en bâton technique */
+        #drawing-container {
+            width: 100%;
+            height: 200px;
+            margin-top: 20px;
+        }
+
+        /* Classes d'animation */
+        .fade-out { opacity: 0; transform: scale(0.5); pointer-events: none; }
+        .fade-in { display: block !important; opacity: 1; }
+        .letter-open { transform: scale(1) !important; display: block !important; }
+
+    </style>
+</head>
+<body>
+
+    <div id="calculation-zone">
+        <h2>Défi spécial Ingénieur :</h2>
+        <div id="equation">14 + 11 = ?</div>
+        <input type="number" id="answer-input" placeholder="??">
+        <button id="submit-btn">Valider</button>
+        <div id="error-msg"></div>
+    </div>
+
+    <div id="gift-zone">
+        <div id="gift-box">🎁</div>
+        <div style="color: var(--tech-blue); font-weight: bold;">(Clique sur le cadeau !)</div>
+    </div>
+
+    <div id="letter">
+        <div id="letter-text">Best Dad Ever</div>
+        
+        <svg id="drawing-container" viewBox="0 0 400 200">
+            <g stroke="#34495e" stroke-width="4" fill="none" stroke-linecap="round">
+                
+                <circle cx="100" cy="60" r="25"/> <line x1="100" y1="85" x2="100" y2="150"/> <line x1="100" y1="100" x2="70" y2="130"/> <line x1="100" y1="100" x2="130" y2="130"/> <line x1="100" y1="150" x2="80" y2="190"/> <line x1="100" y1="150" x2="120" y2="190"/> <text x="85" y="45" font-family="cursive" font-size="20" fill="#2c3e50" stroke="none">Papa</text>
+                <line x1="130" y1="130" x2="145" y2="115" stroke="#f39c12" stroke-width="3"/>
+                <line x1="145" y1="115" x2="155" y2="105" stroke="#7f8c8d" stroke-width="3"/>
+
+                <circle cx="180" cy="80" r="18"/>
+                <line x1="180" y1="98" x2="180" y2="145"/>
+                <line x1="180" y1="110" x2="160" y2="130"/>
+                <line x1="180" y1="110" x2="200" y2="130"/>
+                <line x1="180" y1="145" x2="165" y2="185"/>
+                <line x1="180" y1="145" x2="195" y2="185"/>
+                <text x="170" y="70" font-family="cursive" font-size="14" fill="#34495e" stroke="none">Fille 1</text>
+
+                <circle cx="240" cy="100" r="15"/>
+                <line x1="240" y1="115" x2="240" y2="155"/>
+                <line x1="240" y1="125" x2="225" y2="140"/>
+                <line x1="240" y1="125" x2="255" y2="140"/>
+                <line x1="240" y1="155" x2="230" y2="190"/>
+                <line x1="240" y1="155" x2="250" y2="190"/>
+                <text x="230" y="90" font-family="cursive" font-size="12" fill="#34495e" stroke="none">Fille 2</text>
+
+                <circle cx="320" cy="65" r="22"/>
+                <path d="M 320 87 L 290 150 L 350 150 Z" />
+                <line x1="320" y1="100" x2="295" y2="120"/>
+                <line x1="320" y1="100" x2="345" y2="120"/>
+                <line x1="305" y1="150" x2="300" y2="190"/>
+                <line x1="335" y1="150" x2="340" y2="190"/>
+                <text x="305" y="50" font-family="cursive" font-size="18" fill="#e056fd" stroke="none">Maman</text>
+            </g>
+        </svg>
+    </div>
+
+    <script>
+        const calcZone = document.getElementById('calculation-zone');
+        const answerInput = document.getElementById('answer-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const errorMsg = document.getElementById('error-msg');
+        
+        const giftZone = document.getElementById('gift-zone');
+        const giftBox = document.getElementById('gift-box');
+        
+        const letter = document.getElementById('letter');
+
+        const CORRECT_ANSWER = 25; // La réponse attendue (14 + 11)
+
+        // Gère la validation du calcul
+        function checkAnswer() {
+            const userAnswer = parseInt(answerInput.value);
+
+            if (userAnswer === CORRECT_ANSWER) {
+                // Succès !
+                errorMsg.textContent = "";
+                // Fait disparaître la zone de calcul
+                calcZone.classList.add('fade-out');
+                
+                // Fait apparaître le cadeau après un petit délai
+                setTimeout(() => {
+                    calcZone.style.display = 'none';
+                    giftZone.classList.add('fade-in');
+                }, 500);
+            } else {
+                // Erreur
+                errorMsg.textContent = "Hum... un ingénieur devrait savoir ça ! 😉 Ressaie.";
+                answerInput.value = ""; // Vide l'input
+                answerInput.focus(); // Remet le focus dessus
+            }
+        }
+
+        // Écouteurs d'événements
+        submitBtn.addEventListener('click', checkAnswer);
+        
+        // Permet de valider en appuyant sur Entrée
+        answerInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // Gère l'ouverture du cadeau
+        giftBox.addEventListener('click', () => {
+            // Arrête l'animation de rebaut
+            giftBox.style.animation = 'none';
+            // Animation d'ouverture (grandit et disparaît)
+            giftBox.style.transform = 'scale(5)';
+            giftBox.style.opacity = '0';
+            
+            // Fait apparaître la lettre
+            setTimeout(() => {
+                giftZone.style.display = 'none';
+                letter.classList.add('letter-open');
+            }, 500);
+        });
+    </script>
+</body>
+</html>
